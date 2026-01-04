@@ -6,14 +6,53 @@
             </div>
             <div class="commentItemContent">
                 <span class="userName">{{ item.username }}</span>
-                <span class="commentText">{{ item.comment }}</span>
+                <span class="commentText" v-if="editingCommentId !== item.id">{{ item.comment }}</span>
+                <form v-else class="replaceForm" :id="item.id" @submit.prevent="replaceData(item)">
+                    <input type="text" v-model="newComment"/>
+                    <button type="submit">&#10004;</button>
+                </form>
+            </div>
+            <div class="adminContent">
+                <div class="updateComment" @click="changeActive(item)"><span class="updateCommentSymbol">&#9998;</span></div>
+                <div class="deleteComment" @click="deleteComment(item)"><span class="deleteCommentSymbol">&#215;</span></div>
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
+const API_URL = 'http://127.0.0.1:8000/comments'
+
 defineProps(['commentsData'])
+const emit = defineEmits(['updatePage'])
+
+async function deleteComment(item) {
+    await fetch(API_URL+`/${item.id}`, {
+        method: "DELETE",
+    })
+    
+    emit('updatePage')
+}
+
+const editingCommentId = ref(null)
+const newComment = ref('')
+
+async function replaceData(item) {
+    await fetch(API_URL+`/${item.id}`, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({comment: newComment.value})
+    })
+    editingCommentId.value = null
+    const newComment = ref('') // Очищаем данные
+    emit('updatePage')
+}
+
+function changeActive(item) {
+    editingCommentId.value = item.id
+}
 </script>
 
 
@@ -36,6 +75,7 @@ defineProps(['commentsData'])
     max-width: 900px;
     display: flex;
     align-items: center;
+    position: relative;
 
     padding: 5px;
     margin-bottom: 10px;
@@ -73,5 +113,25 @@ defineProps(['commentsData'])
     font-weight: 400;
     font-size: 16px; 
     color: rgb(235, 235, 235);
+}
+
+.adminContent {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+
+    display: flex;
+}
+.deleteComment {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.updateComment {
+    cursor: pointer;
+}
+
+.replaceForm {
+    display: flex;
 }
 </style>

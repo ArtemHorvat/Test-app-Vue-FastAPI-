@@ -1,11 +1,12 @@
 <template>
   <div class="appWindow">
     <NavBar @openWindow="openCommentWindow" />
-    <CommentsWindow :commentsData="userData"/>
+    <CommentsWindow :commentsData="userData"
+                    @updatePage="getData"/>
     <Teleport to="body">
       <PostComment :isActiveProp="isActive" 
                    @closeWindow="closeCommentWindow"
-                   @sendData="pushData"
+                   @updatePage="getData"
       />
     </Teleport>
   </div>  
@@ -33,17 +34,16 @@ function closeCommentWindow() { // На действие из PostCommentModal �
   isActive.value = false
 }
 
-function pushData(data) {
-  userData.push(data)
-  console.log(data)
-}
 
+// Получение всех комментариев при загрузке страницы
 async function getData() {
   const res = await fetch(API_URL)
   const comments  = await res.json()
 
+  userData.length = 0 // Очищаем перед тем как заполнить заново
+
   comments.forEach(comment => {
-    pushData(comment)
+    userData.push(comment)
   });
 }
 

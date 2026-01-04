@@ -18,34 +18,36 @@
 </template>
 
 <script setup>
+const API_URL = 'http://127.0.0.1:8000/comments'
+
 import { ref } from 'vue'
 const userName = ref('')
 const userComment = ref('')
 
 defineProps(['isActiveProp'])
 
-const emit = defineEmits(['closeWindow', 'sendData'])
+const emit = defineEmits(['closeWindow', 'updatePage'])
 
 function closeCommentWindow() {
     emit('closeWindow') // Здесь посылаем сообщение в App, что окно закрываем
 }
 
-function generateCode(length = 8) {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  const charsLength = chars.length;
 
-  for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * charsLength));
-  }
+async function submitData() {
+    //emit('sendData', {id: key, username: userName, comment: userComment})
 
-  return result;
-}
+    // Отправляем новый комментарий на бекенд:
+    const newComment = {username: userName.value, comment: userComment.value}
 
-function submitData() {
-    const key = generateCode()
-    emit('sendData', {id: key, username: userName, comment: userComment})
-    emit('closeWindow')
+    await fetch(API_URL, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(newComment)
+    })
+
+    emit('updatePage') // Говорим, что можно обновить содержимое
+
+    emit('closeWindow') // Диалоговое окно можно закрыть
 }
 </script>
 
