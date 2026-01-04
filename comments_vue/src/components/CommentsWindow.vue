@@ -1,11 +1,11 @@
 <template>
     <div class="commentsWindow">
-        <div class="commentItem" v-for="item in commentsData" :key="item" >
+        <div class="commentItem" v-for="item in commentsData" :key="item.id" >
             <div class="commentItemImage">
                 
             </div>
             <div class="commentItemContent">
-                <span class="userName">{{ item.name }}</span>
+                <span class="userName">{{ item.username }}</span>
                 <span class="commentText">{{ item.comment }}</span>
             </div>
         </div>

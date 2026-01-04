@@ -30,8 +30,21 @@ function closeCommentWindow() {
     emit('closeWindow') // Здесь посылаем сообщение в App, что окно закрываем
 }
 
+function generateCode(length = 8) {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  const charsLength = chars.length;
+
+  for (let i = 0; i < length; i++) {
+    result += chars.charAt(Math.floor(Math.random() * charsLength));
+  }
+
+  return result;
+}
+
 function submitData() {
-    emit('sendData', {name: userName, comment: userComment})
+    const key = generateCode()
+    emit('sendData', {id: key, username: userName, comment: userComment})
     emit('closeWindow')
 }
 </script>

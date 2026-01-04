@@ -30,10 +30,26 @@ function closeCommentWindow() { // На действие из PostCommentModal �
 }
 
 const userData = reactive([
-    {name: 'Alice', comment: 'Thats app so fun!'},
-    {name: 'Bob', comment: 'Like FaceBook but boring...'},
-    {name: 'James', comment: 'Pretty cool :)'},
-    {name: 'Peter', comment: 'This app for training skills lmao.'}
+  {
+    id: "8dvsfJuK",
+    username: "Bob",
+    comment: "It's funny :)"
+  },
+  {
+    id: "XuF8W0bo",
+    username: "Alice",
+    comment: "For what this?"
+  },
+  {
+    id: "mvclTS2h",
+    username: "James",
+    comment: "Simple app, good for study"
+  },
+  {
+    id: "2lclvZI1",
+    username: "Artem",
+    comment: "This is the end of comments. Try contimnue"
+  }
 ])
 
 function pushData(data) {
