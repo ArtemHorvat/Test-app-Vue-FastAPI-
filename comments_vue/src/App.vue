@@ -13,13 +13,17 @@
 
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 
 import PostComment from './components/PostCommentModal.vue'
 import NavBar from './components/NavBar.vue'
 import CommentsWindow from './components/CommentsWindow.vue'
 
+const API_URL = 'http://127.0.0.1:8000/comments'
+
+
 const isActive = ref(false)
+const userData = reactive([])
 
 function openCommentWindow() { // На действие из NavBar открываем окно
   isActive.value = true
@@ -29,32 +33,23 @@ function closeCommentWindow() { // На действие из PostCommentModal �
   isActive.value = false
 }
 
-const userData = reactive([
-  {
-    id: "8dvsfJuK",
-    username: "Bob",
-    comment: "It's funny :)"
-  },
-  {
-    id: "XuF8W0bo",
-    username: "Alice",
-    comment: "For what this?"
-  },
-  {
-    id: "mvclTS2h",
-    username: "James",
-    comment: "Simple app, good for study"
-  },
-  {
-    id: "2lclvZI1",
-    username: "Artem",
-    comment: "This is the end of comments. Try contimnue"
-  }
-])
-
 function pushData(data) {
   userData.push(data)
+  console.log(data)
 }
+
+async function getData() {
+  const res = await fetch(API_URL)
+  const comments  = await res.json()
+
+  comments.forEach(comment => {
+    pushData(comment)
+  });
+}
+
+onMounted(() => {
+  getData()
+})
 </script>
 
 <style scoped>
