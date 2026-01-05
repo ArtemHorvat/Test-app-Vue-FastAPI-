@@ -8,7 +8,7 @@
                 </div>
                 <div class="modalViewFormComp">
                     <label for="comment">Put your comment</label>
-                    <textarea type="text" id="comment" v-model="userComment"/>
+                    <textarea type="text" id="comment" v-model="userComment" />
                 </div>
                 <button class="submitButton">Submit comment!</button>
             </form>

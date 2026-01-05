@@ -45,8 +45,9 @@ async function replaceData(item) {
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({comment: newComment.value})
     })
+    console.log('Here!', newComment.value)
     editingCommentId.value = null
-    const newComment = ref('') // Очищаем данные
+    newComment.value = ''
     emit('updatePage')
 }
 
