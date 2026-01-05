@@ -6,7 +6,6 @@
       </div>
       <div class="menu">
         <span class="menuItem" @click="openCommentWindow">Create comment</span>
-        <span class="menuItem">About programm</span>
       </div>
     </div>
   </div>
